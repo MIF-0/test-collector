@@ -2,6 +2,14 @@
 name = "test-collector-derive"
 version = "0.1.0"
 edition = "2021"
+description = "A derive to be able to mark the tests method, so you can iterate over them"
+keywords = ["testing", "integration-tests", "test-collector"]
+categories = ["development-tools", "development-tools::testing"]
+license = "MIT/Apache-2.0"
+repository = "https://github.com/MIF-0/test-collector/tree/main/test-collector-derive"
+documentation = "https://docs.rs/test-collector-derive"
+readme = "README.md"
+authors = ["Vladyslav Bukatin <ender.ender321.@gmail.com>"]
 
 [lib]
 proc-macro = true
@@ -12,7 +20,7 @@ quote = "1.0.18"
 proc-macro2 = "1.0.38"
 rand = "0.8.5"
 inventory = "0.1.11"
-test-collector-utils = { path = "../test-collector-utils" }
+test-collector-utils = "0.1.0"
 
 [dev-dependencies]
 reqwest = { version = "0.11.10", features = ["json"]}

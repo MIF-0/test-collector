@@ -19,7 +19,7 @@ this lib using `inventory`
     }
 ```
 
-test-collector introduce custom test runner. You will need to create your own main function and in Cargo.toml of you project add this with needed name and path:
+test-collector-lib introduce custom test runner. You will need to create your own main function and in Cargo.toml of you project add this with needed name and path:
 ```toml
 [[test]]
 name = "integration"
@@ -27,4 +27,4 @@ path = "integration-tests/main.rs"
 harness = false
 ```
 
-example of the main can be found in `test-collector-lib/src/lib.rs:166`
+example of the main can be found in `test-collector-lib/src/lib.rs:88`

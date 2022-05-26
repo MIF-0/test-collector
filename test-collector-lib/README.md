@@ -1,4 +1,5 @@
-test-collector-derive will give you '#[collect_test]' which you can use to collect the tests
+test-collector introduce custom test runner.
+You will need test-collector-derive, which gives you '#[collect_test]' which you can use to collect the tests
 this lib using `inventory`
 ```rust
     #[collect_test]
@@ -19,7 +20,7 @@ this lib using `inventory`
     }
 ```
 
-test-collector introduce custom test runner. You will need to create your own main function and in Cargo.toml of you project add this with needed name and path:
+You will need to create your own main function and in Cargo.toml of you project add this with needed name and path:
 ```toml
 [[test]]
 name = "integration"

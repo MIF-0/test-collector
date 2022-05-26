@@ -13,8 +13,8 @@
 //!    use actix_web::{App, HttpResponse, HttpServer, Responder};
 //!    use actix_web::rt::SystemRunner;
 //!    use test_collector_derive::collect_test;
-//!    use test_collector_lib::{log_env_info, TestEnvironment};
-//!    use test_collector_lib::test_runner::TestRunner;
+//!    use test_collector::{log_env_info, TestEnvironment};
+//!    use test_collector::test_runner::TestRunner;
 //!
 //!    struct MockTestEnv {
 //!     system: SystemRunner,
