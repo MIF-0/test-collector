@@ -1,0 +1,21 @@
+[package]
+name = "test-collector-lib"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = "0.3.21"
+inventory = "0.1.11"
+chrono = "0.4.19"
+once_cell = "1.9.0"
+log = "0.4.14"
+env_logger = "0.9.0"
+test-collector-utils = { path = "../test-collector-utils" }
+test-collector-derive = { path = "../test-collector-derive" }
+
+[dev-dependencies]
+reqwest = { version = "0.11.10", features = ["json"]}
+actix-web = "4"
+dotenv = "0.15.0"

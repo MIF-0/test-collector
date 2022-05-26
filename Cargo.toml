@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "test-collector-utils",
+    "test-collector-derive",
+    "test-collector-lib",
+]
