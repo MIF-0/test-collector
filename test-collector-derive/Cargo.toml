@@ -1,6 +1,6 @@
 [package]
 name = "test-collector-derive"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2021"
 description = "A derive to be able to mark the tests method, so you can iterate over them"
 keywords = ["testing", "integration-tests", "test-collector"]
@@ -20,7 +20,7 @@ quote = "1.0.18"
 proc-macro2 = "1.0.38"
 rand = "0.8.5"
 inventory = "0.1.11"
-test-collector-utils = "0.1.0"
+test-collector-utils = "0.1.2"
 
 [dev-dependencies]
 reqwest = { version = "0.11.10", features = ["json"]}
