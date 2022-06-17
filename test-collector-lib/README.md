@@ -1,4 +1,6 @@
-test-collector introduce custom test runner.
+test-collector introduce custom test runner. You can implement your own `start` and `stop` functions, 
+which will be invoked only before and after all tests respectively. 
+Also you can override `before_each_test` and `after_each_test` to bring additional cleaning or set_up functionality to each of your tests.
 You will need test-collector-derive, which gives you '#[collect_test]' which you can use to collect the tests
 this lib using `inventory`
 ```rust

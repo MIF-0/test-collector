@@ -1,5 +1,6 @@
 //! ## Usage
-//! Do not forget to modify Cargo.toml with
+//! Do not forget to modify Cargo.toml with.
+//! If you want you can override before_each_test and after_each_test from the TestEnvironment trait. By default these methods are empty.
 //! ```toml
 //! [[test]]
 //! name = "integration"
@@ -89,7 +90,15 @@ use crate::logger::log_static_info;
 pub trait TestEnvironment {
     fn start(self) -> Self;
 
+    fn before_each_test(&self) {
+        // do nothing by default
+    }
+
     fn block_on<F: Future>(&self, fut: F) -> F::Output;
+
+    fn after_each_test(&self) {
+        // do nothing by default
+    }
 
     fn stop(self) -> Self;
 }
@@ -115,15 +124,21 @@ pub fn log_env_info(message: Arguments) {
 #[cfg(test)]
 mod tests {
     use std::future::Future;
+    use std::sync::atomic::{AtomicU32, Ordering};
     use std::thread;
     use actix_web::{App, HttpResponse, HttpServer, Responder};
     use actix_web::rt::SystemRunner;
+    use once_cell::sync::OnceCell;
     use test_collector_derive::collect_test;
+    use Ordering::SeqCst;
+    use std::rc::Rc;
     use crate::test_runner::TestRunner;
     use crate::{log_env_info, TestEnvironment};
 
     struct MockTestEnv {
         system: SystemRunner,
+        before_each_call: Rc<AtomicU32>,
+        after_each_call: Rc<AtomicU32>,
     }
 
     impl TestEnvironment for MockTestEnv {
@@ -143,8 +158,16 @@ mod tests {
             return self;
         }
 
+        fn before_each_test(&self) {
+            self.before_each_call.fetch_add(1, SeqCst);
+        }
+
         fn block_on<F: Future>(&self, fut: F) -> F::Output {
             self.system.block_on(fut)
+        }
+
+        fn after_each_test(&self) {
+            self.after_each_call.fetch_add(1, SeqCst);
         }
 
         fn stop(self) -> Self {
@@ -165,8 +188,33 @@ mod tests {
     #[should_panic(expected = "Some tests are Failing")]
     fn possible_main() {
         let system = actix_web::rt::System::new();
-        let test_runner = TestRunner::new(MockTestEnv{system});
+        let test_runner = TestRunner::new(
+            MockTestEnv {
+                system,
+                before_each_call: Rc::new(AtomicU32::new(0)),
+                after_each_call: Rc::new(AtomicU32::new(0)),
+            }
+        );
+
         test_runner.run();
+    }
+
+    #[test]
+    fn check_before_and_after() {
+        let system = actix_web::rt::System::new();
+        let before_each_call = Rc::new(AtomicU32::new(0));
+        let after_each_call = Rc::new(AtomicU32::new(0));
+        let test_runner = TestRunner::new(
+            MockTestEnv {
+                system,
+                before_each_call: before_each_call.clone(),
+                after_each_call: after_each_call.clone(),
+            }
+        );
+
+        test_runner.run_safe();
+        assert_eq!(before_each_call.fetch_or(0, SeqCst), 4);
+        assert_eq!(after_each_call.fetch_or(0, SeqCst), 4);
     }
 
     #[collect_test]

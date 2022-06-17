@@ -77,12 +77,16 @@ impl<T: TestEnvironment> TestRunner<T> {
         let mut successful_tests: Vec<TestResult> = Vec::new();
         let mut failed_tests: Vec<TestResult> = Vec::new();
         for test in inventory::iter::<IntegrationTestMeta> {
+            log_test(format_args!("Running Before Each Test for: [{}]", test.name));
+            self.test_environment.before_each_test();
             let result = self.run_test(test);
             if result.success {
                 successful_tests.push(result);
             } else {
                 failed_tests.push(result);
             }
+            log_test(format_args!("Running After Each Test for: [{}]", test.name));
+            self.test_environment.after_each_test();
         }
         (successful_tests, failed_tests)
     }
